@@ -117,6 +117,8 @@ exports.decode = function(input) {
             wasm.__wbindgen_free(r0, r1 * 1);
         }
         return v1;
+    } catch(e) {
+        return "Failed to decode Bottom 🥺";
     } finally {
         wasm.__wbindgen_export_0.value += 16;
     }
