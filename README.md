@@ -1,12 +1,12 @@
-# bottomcord
+# Power Bottom
 
-A powercord plugin for [bottom](https://github.com/kaylynn234/bottom)
+A Powercord plugin for [bottom](https://github.com/kaylynn234/bottom).
 
 Perhaps you have found yourself in this situation before:
 
 ![,,,,,,,,,](https://cdn.discordapp.com/attachments/644479051918082050/799905088541425664/bottom.jpg)
 
-The divine bottomcord plugin exists to alleviate this pain. No longer will you struggle when communicating with the average Discord user.
+The divine Powercord plugin exists to alleviate this pain. No longer will you struggle when communicating with the average Discord user.
 
 ## But what does it actually do?
 
