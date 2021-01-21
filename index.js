@@ -148,14 +148,4 @@ module.exports = class PowerBottom extends Plugin {
         powercord.api.settings.unregisterSettings(this.entityID);
         Handler.clearCache();
     }
-
-    generateToastID() {
-        return (
-            "power-bottom-translating-" +
-            Math.random()
-                .toString(36)
-                .replace(/[^a-z]+/g, "")
-                .substr(0, 5)
-        );
-    }
 }
