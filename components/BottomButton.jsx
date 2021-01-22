@@ -29,6 +29,7 @@ module.exports = class BottomButton extends React.Component {
                         className={`message-power-bottom-button`}
                         onClick={async () => {
                             try {
+                                console.debug('POWER-BOTTOM DEBUG: button clicked');
                                 this.props.Handler.translateMessage(this.props.message);
                             } catch(e) {
                                 console.error(e);

@@ -67,6 +67,7 @@ class BottomHandler {
     }
 
     updateMessage(message) {
+        console.debug('POWER-BOTTOM DEBUG: message update dispatched');
         FluxDispatcher.dirtyDispatch({
             bottomTranslation: true,
             type: "MESSAGE_UPDATE",
