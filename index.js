@@ -14,7 +14,69 @@ const Indicator = require("./components/Indicator.jsx");
 
 const Handler = new (require('./bottomHandler'))();
 
+
+
+
+const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const count = (string, subString) => {
+    var n = 0;
+    var idx = 0;
+    var pos = 0;
+    step = subString.length;
+
+    while (true) {
+        pos = string.indexOf(subString, pos);
+        if (pos >= 0) {
+            n++;
+            pos += step;
+        } else break;
+    }
+    return n;
+}
+
+function inlineEncode(p, s, text) {
+    var np = count(text, p);
+    var ns = count(text, s);
+
+    if (np === 0 || ns === 0) return text;
+    
+    var pl = p.length;
+    var sl = s.length;
+    let result = [];
+    let idx = 0;
+
+    while (true) {
+        var startIndex = text.indexOf(p, idx);
+
+        if (startIndex < 0) {
+            result.push(text.slice(idx));
+            break;
+        }
+
+        var endIndex = text.indexOf(s, startIndex + pl);
+
+        if (endIndex < 0) {
+            result.push(text.slice(idx));
+            break;
+        }
+
+        result.push(text.slice(idx, startIndex));
+        startIndex += pl;
+        result.push(Bottom.encode(text.slice(startIndex, endIndex)));
+        endIndex += sl;
+        idx = endIndex;
+    }
+
+    return result.join('');
+}
+
+
 module.exports = class PowerBottom extends Plugin {
+    constructor() {
+        super();
+        this.ConnectedBottomButton = this.settings.connectStore(BottomButton);
+    }
+
     async startPlugin () {
         powercord.api.settings.registerSettings(this.entityID, {
                 category: this.entityID,
@@ -56,12 +118,6 @@ module.exports = class PowerBottom extends Plugin {
                         args[0].message.id,
                         false
                     );
-
-                    try {
-                        Handler.translateMessage(args[0].message)
-                    } catch(e) {
-                        console.error(e);
-                    }
                 }
                 return args;
             }
@@ -73,17 +129,35 @@ module.exports = class PowerBottom extends Plugin {
             "sendMessage",
             (args) => {
                 if (this.settings.get('auto-encode-send') && !args[1].bottomTranslation) {
-                    var bottom = Bottom.encode(args[1].content);
+                    let sendType = this.settings.get('encode-send-type', 0);
+                    var content = args[1].content;
 
-                    if (bottom.length >= constants.MAX_MESSAGE_LENGTH && this.settings.get('send-file')) {
+                    switch (sendType) {
+                        case 0:  // all
+                            content = Bottom.encode(content);
+                            break;
+                        case 1:  // inline greedy
+                            var prefix = escapeRegex(this.settings.get('inline-bottom-prefix', '👉'));
+                            var suffix = escapeRegex(this.settings.get('inline-bottom-suffix', '👈'));
+                            var reg = new RegExp(`${prefix}(.+)${suffix}`, 'gm');
+                            content = content.replace(reg, (str, p1, o, s) => Bottom.encode(p1));
+                            break;
+                        case 2:  // inline parsed
+                            var prefix = this.settings.get('inline-bottom-prefix', '👉');
+                            var suffix = this.settings.get('inline-bottom-suffix', '👈');
+                            content = inlineEncode(prefix, suffix, content);
+                            break;
+                    }
+
+                    if (content.length >= constants.MAX_MESSAGE_LENGTH && this.settings.get('send-file')) {
                         args[1].content = '';
 
-                        const textDocument = new Blob([ bottom ], {type: 'text/plain'});
+                        const textDocument = new Blob([ content ], {type: 'text/plain'});
                         upload(args[0], makeFile(textDocument, this.settings.get('send-file-name', 'bottom.txt'), true), args[1]);
                         return false;
                     }
 
-                    args[1].content = bottom;
+                    args[1].content = content;
                     args[1].bottomTranslation = true;
                     MessageEvents.sendMessage(...args);
                     return false;
@@ -103,7 +177,7 @@ module.exports = class PowerBottom extends Plugin {
                 if (!props) return res;
 
                 res.props.children.unshift(
-                    React.createElement(BottomButton, {
+                    React.createElement(this.ConnectedBottomButton, {
                         message: props.message,
                         Handler,
                     })
@@ -124,7 +198,8 @@ module.exports = class PowerBottom extends Plugin {
                         try {
                             res.props.children.push(
                                 React.createElement(Indicator, {
-                                    bottom: Handler.cache[args[0].message.channel_id][args[0].message.id].bottom
+                                    bottom: Handler.cache[args[0].message.channel_id][args[0].message.id].bottom,
+                                    layers: Handler.cache[args[0].message.channel_id][args[0].message.id].layers,
                                 })
                             );
                         } catch {}

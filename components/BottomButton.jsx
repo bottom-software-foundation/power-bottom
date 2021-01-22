@@ -29,15 +29,14 @@ module.exports = class BottomButton extends React.Component {
                         className={`message-power-bottom-button`}
                         onClick={async () => {
                             try {
-                                this.props.Handler.translateMessage(this.props.message)
+                                this.props.Handler.translateMessage(this.props.message);
                             } catch(e) {
-                                console.log(e);
+                                console.error(e);
                                 powercord.api.notices.sendToast(
                                     this.generateToastID(),
                                     {
                                         header: "Power Bottom",
-                                        content:
-                                            "Failed to decode bottom 🥺",
+                                        content: e.message,
                                         icon: "exclamation-triangle",
                                         timeout: 3e3,
                                     }

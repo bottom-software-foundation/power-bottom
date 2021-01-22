@@ -10,7 +10,7 @@ module.exports = class Indicator extends React.Component {
 
     render() {
         return (
-            <Tooltip color="black" postion="top" text={'🥺'}>
+            <Tooltip color="black" postion="top" text={ this.props.layers <= 1 ? '🥺' : `Decoded from ${this.props.layers} nested bottom messages` }>
                 {({ onMouseLeave, onMouseEnter }) => (
                     <span
                         className={`power-bottom-indicator ${classes.edited}`}

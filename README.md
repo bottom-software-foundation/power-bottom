@@ -11,10 +11,15 @@ The divine Powercord plugin exists to alleviate this pain. No longer will you st
 ## Features
 
 - Full implementation of the [bottom spec](https://github.com/bottom-software-foundation/spec) (WASM btw)
+- Bottom decoding for messages
+  - Decoding nested bottom in messages
+  - Decoding inline bottom in messages
 - `{prefix}bottom [text]` command to automagically encode and send bottom
 - Option for automatic file sending (for when bottom takes up too much space 👉👈)
   - Custom file names for your bottom overflow
 - Option for automatically encoding of *all* your messages in bottom
+  - Inline bottom encoding in your messages
+  - Custom suffix and prefix for inline bottom indicators
 
 ## But what does it actually do?
 

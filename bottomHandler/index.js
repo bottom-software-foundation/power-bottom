@@ -6,6 +6,27 @@ const Bottom = require('../bottom_wasm');
 class BottomHandler {
     constructor() {
         this.cache = {};
+        this.re = /((?:((?:\uD83E\uDEC2)?(?:💖)*(?:✨)*(?:🥺)*(?:,)*(❤️)?)(?:👉👈|\u200b))+)/gm;
+    }
+
+    translate(text) {
+        var original = text;
+        var translated = text;
+        var layers = 0;
+        while (original.match(this.re)) {
+            translated = original.replace(this.re, (str, p1, offset, s) =>  Bottom.decode(p1) || p1);
+
+            // the regex can sometimes pick up invalid bottom in which case we want to return to avoid an infinite loop
+            if (translated === original) return translated;
+            else {
+                original = translated;
+                layers++;
+            }
+        }
+        return {
+            translated: translated,
+            layers: layers,
+        };
     }
 
     translateMessage(message) {
@@ -24,12 +45,13 @@ class BottomHandler {
         }
 
         if (this.cache[message.channel_id][message.id].bottom) {
-            let translated = Bottom.decode(message.content);  // for some reason this can be undefined???
-            if (!translated) { 
+            let { translated, layers } = this.translate(message.content);
+            if (translated === message.content) {
                 this.cache[message.channel_id][message.id].top = true;
-                throw new Error('🥺') 
+                throw new Error('No Bottom detected 🥺') 
             }
             this.cache[message.channel_id][message.id].bottom = false;
+            this.cache[message.channel_id][message.id].layers = layers;
 
             if (this.cache[message.channel_id][message.id].originalContent !== translated) {
                 message.content = translated;

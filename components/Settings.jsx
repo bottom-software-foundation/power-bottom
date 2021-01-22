@@ -29,6 +29,45 @@ function Settings ({ getSetting, updateSetting, toggleSetting }) {
             >
             Automatically encode outgoing messages
         </SwitchItem>
+        <RadioGroup
+          onChange={(e) => updateSetting('encode-send-type', e.value)}
+          value={getSetting('encode-send-type', 0)}
+          options={[
+            {
+              name: 'All',
+              desc: 'The full text of your message will be bottom encoded.',
+              value: 0,
+            },
+            {
+              name: 'Inline (Greedy)',
+              desc: 'Specify a prefix and suffix to indicate inline bottom.',
+              value: 1,
+            },
+            {
+              name: 'Inline (Parsed)',
+              desc: 'Specify a prefix and suffix to indicate inline bottom. Acts like discord markdown.',
+              value: 2,
+            }
+          ]}
+        >
+            Automatic Encode Behavior
+        </RadioGroup>
+        <TextInput
+          note={ "The prefix to indicate the start of an inline bottom block" }
+          onChange={val => { if (val.trim().length > 0) updateSetting('inline-bottom-prefix', val) }}
+          defaultValue={getSetting('inline-bottom-prefix', '👉')}
+          required={false}
+        >
+          Inline bottom prefix
+        </TextInput>
+        <TextInput
+          note={ "The suffix to indicate the start of an inline bottom block" }
+          onChange={val => { if (val.trim().length > 0) updateSetting('inline-bottom-suffix', val) }}
+          defaultValue={getSetting('inline-bottom-suffix', '👈')}
+          required={false}
+        >
+          Inline bottom suffix
+        </TextInput>
     </>
   );
 }
