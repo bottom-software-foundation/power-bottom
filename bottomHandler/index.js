@@ -9,6 +9,10 @@ class BottomHandler {
         this.re = /((?:((?:\uD83E\uDEC2)?(?:💖)*(?:✨)*(?:🥺)*(?:,)*(❤️)?)(?:👉👈|\u200b))+)/gm;
     }
 
+    isTranslated(message) {
+        return this.cache[message.channel_id][message.id].originalContent !== message.content;
+    }
+
     translate(text) {
         var original = text;
         var translated = text;
@@ -17,7 +21,7 @@ class BottomHandler {
             translated = original.replace(this.re, (str, p1, offset, s) =>  Bottom.decode(p1) || p1);
 
             // the regex can sometimes pick up invalid bottom in which case we want to return to avoid an infinite loop
-            if (translated === original) return translated;
+            if (translated === original) break;
             else {
                 original = translated;
                 layers++;
@@ -39,28 +43,28 @@ class BottomHandler {
         }
         if (!this.cache[message.channel_id][message.id]) {
             this.cache[message.channel_id][message.id] = {
-                bottom: true,  // assume bottom by default
                 originalContent: message.content,
             };
         }
 
-        if (this.cache[message.channel_id][message.id].bottom) {
+        let cached = this.cache[message.channel_id][message.id];
+
+        if (this.isTranslated(message)) {
+            // if we're reverting back to original, just set the content back to original
+            message.content = cached.originalContent;
+            this.updateMessage(message);
+        } else {
+            // the message hasn't been edited, let's try to decode it
             let { translated, layers } = this.translate(message.content);
             if (translated === message.content) {
-                this.cache[message.channel_id][message.id].top = true;
-                throw new Error('No Bottom detected 🥺') 
-            }
-            this.cache[message.channel_id][message.id].bottom = false;
-            this.cache[message.channel_id][message.id].layers = layers;
-
-            if (this.cache[message.channel_id][message.id].originalContent !== translated) {
+                // we don't want to do anything if there is no bottom
+                // since the translation fails, mark this message to not show the indicator
+                cached.top = true;
+                throw new Error('No Bottom detected 🥺');
+            } else {
+                // let the indicator show how many layers of decoding we did
+                cached.layers = layers;
                 message.content = translated;
-                this.updateMessage(message)
-            }
-        } else {
-            if (message.content !== this.cache[message.channel_id][message.id].originalContent) {
-                message.content = this.cache[message.channel_id][message.id].originalContent;
-                this.cache[message.channel_id][message.id].bottom = true;
                 this.updateMessage(message);
             }
         }
