@@ -1,6 +1,6 @@
 # Power Bottom
 
-A Powercord plugin for [bottom](https://github.com/kaylynn234/bottom), following the [bottom spec](https://github.com/bottom-software-foundation/spec).
+A Powercord plugin for bottom, following the [bottom spec](https://github.com/bottom-software-foundation/spec).
 
 Perhaps you have found yourself in this situation before:
 
