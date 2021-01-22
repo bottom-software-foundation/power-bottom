@@ -46,7 +46,7 @@ module.exports = class BottomButton extends React.Component {
                         onMouseEnter={onMouseEnter}
                         onMouseLeave={onMouseLeave}
                     >
-                        <svg x="0" y="0" aria-hidden="false" width="22" height="22" viewBox="0 -1 40 40" fill="currentColor" class={classes.icon}>
+                        <svg x="0" y="0" aria-hidden="false" width="22" height="22" viewBox="0 0 36 36" fill="currentColor" class={classes.icon}>
                             <circle fill="#FFCC4D" cx="18" cy="18" r="18"/>
                             <path fill="#65471B" d="M20.996 27c-.103 0-.206-.016-.309-.049-1.76-.571-3.615-.571-5.375 0-.524.169-1.089-.117-1.26-.642-.171-.525.117-1.089.643-1.26 2.162-.702 4.447-.702 6.609 0 .525.171.813.735.643 1.26-.137.421-.529.691-.951.691z"/>
                             <path fill="#FFF" d="M30.335 12.068c-.903 2.745-3.485 4.715-6.494 4.715-.144 0-.289-.005-.435-.014-1.477-.093-2.842-.655-3.95-1.584.036.495.076.997.136 1.54.152 1.388.884 2.482 2.116 3.163.82.454 1.8.688 2.813.752 1.734.109 3.57-.28 4.873-.909 1.377-.665 2.272-1.862 2.456-3.285.183-1.415-.354-2.924-1.515-4.378z"/>
