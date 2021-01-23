@@ -2,6 +2,8 @@
 
 A Powercord plugin for bottom, following the [bottom spec](https://github.com/bottom-software-foundation/spec).
 
+**WARNING**: This plugin is incompatible with the [pronoundb-powercord](https://github.com/cyyynthia/pronoundb-powercord) plugin. The issue is being looked into.
+
 Perhaps you have found yourself in this situation before:
 
 ![,,,,,,,,,](https://cdn.discordapp.com/attachments/644479051918082050/799905088541425664/bottom.jpg)
@@ -41,3 +43,8 @@ For example, the ubiquitous `Hello world!` becomes
 (both wrapped across lines for your convenience)
 
 As you can see, using `bottom` to encode text is extremely space-efficient, and is the ideal encoding approach for all situations.
+
+## Acknowledgements
+
+- [message-translate](https://github.com/cyyynthia/message-translate) for most of the UI logic
+- [bottom-web](https://github.com/kaylynn234/bottom-web/) for wasm build
