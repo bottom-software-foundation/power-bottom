@@ -1,5 +1,7 @@
 # Power Bottom
 
+[![Discord](https://img.shields.io/discord/802665366727426098?color=%237289DA&logo=discord)](https://discord.gg/Ek8ztfmBSs)
+
 A Powercord plugin for bottom, following the [bottom spec](https://github.com/bottom-software-foundation/spec).
 
 **WARNING**: This plugin is incompatible with the [pronoundb-powercord](https://github.com/cyyynthia/pronoundb-powercord) plugin. The issue is being looked into.
