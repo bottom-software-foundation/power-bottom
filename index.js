@@ -198,7 +198,7 @@ module.exports = class PowerBottom extends Plugin {
                         try {
                             res.props.children.push(
                                 React.createElement(Indicator, {
-                                    bottom: Handler.isTranslated(args[0].message),
+                                    bottom: !Handler.isTranslated(args[0].message),
                                     layers: Handler.cache[args[0].message.channel_id][args[0].message.id].layers,
                                 })
                             );
