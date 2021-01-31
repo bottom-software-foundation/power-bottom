@@ -10,6 +10,11 @@ class BottomHandler {
     }
 
     isTranslated(message) {
+        if (
+            !this.cache[message.channel_id] ||
+            !this.cache[message.channel_id][message.id]
+            ) { return false; }
+
         return this.cache[message.channel_id][message.id].originalContent !== message.content;
     }
 
