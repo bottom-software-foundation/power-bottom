@@ -18,7 +18,7 @@ class BottomHandler {
         return this.cache[message.channel_id][message.id].originalContent !== message.content;
     }
 
-    translate(text) {
+    translate(text, notNested) {
         var original = text;
         var translated = text;
         var layers = 0;
@@ -26,7 +26,7 @@ class BottomHandler {
             translated = original.replace(this.re, (str, p1, offset, s) =>  Bottom.decode(p1) || p1);
 
             // the regex can sometimes pick up invalid bottom in which case we want to return to avoid an infinite loop
-            if (translated === original) break;
+            if (translated === original || notNested) break;
             else {
                 original = translated;
                 layers++;
@@ -38,7 +38,7 @@ class BottomHandler {
         };
     }
 
-    translateMessage(message) {
+    translateMessage(message, decodeLayers) {
         if (!message.content || message.content.length === 0) {
             return "";
         }
@@ -60,7 +60,7 @@ class BottomHandler {
             this.updateMessage(message);
         } else {
             // the message hasn't been edited, let's try to decode it
-            let { translated, layers } = this.translate(message.content);
+            let { translated, layers } = this.translate(message.content, !decodeLayers);
             if (translated === message.content) {
                 // we don't want to do anything if there is no bottom
                 // since the translation fails, mark this message to not show the indicator

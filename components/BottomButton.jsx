@@ -29,7 +29,7 @@ module.exports = class BottomButton extends React.Component {
                         className={`message-power-bottom-button`}
                         onClick={async () => {
                             try {
-                                this.props.Handler.translateMessage(this.props.message);
+                                this.props.Handler.translateMessage(this.props.message, this.props.getSetting('decode-layers', true));
                             } catch(e) {
                                 console.error(e);
                                 powercord.api.notices.sendToast(

@@ -8,6 +8,13 @@ function Settings ({ getSetting, updateSetting, toggleSetting }) {
     <FormTitle tag='h4'>Settings 🥺</FormTitle>
     <div style={{ marginBottom: 20 }}/>
         <SwitchItem
+            value={getSetting('decode-layers', true)}
+            onChange={() => toggleSetting('decode-layers')}
+            note={'Whether Power Bottom should decode nested bottom. Turn this off if you often decode bottom with bottom.'}
+            >
+            Decode Layers
+        </SwitchItem>
+        <SwitchItem
             value={getSetting('send-file', false)}
             onChange={() => toggleSetting('send-file')}
             note={'Whether Power Bottom should send your command output as a file if it\'s too long 👉👈'}
