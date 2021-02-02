@@ -1,6 +1,6 @@
 const { Plugin } = require('powercord/entities');
 const { findInReactTree } = require("powercord/util");
-const { React, FluxDispatcher, getModule, constants, messages: MessageEvents, channels: { getChannelId }, contextMenu: { openContextMenu } } = require('powercord/webpack');
+const { React, FluxDispatcher, getModule, constants, messages: MessageEvents } = require('powercord/webpack');
 const { inject, uninject } = require('powercord/injector');
 
 const MiniPopover = getModule((m) => m.default && m.default.displayName === "MiniPopover", false);
