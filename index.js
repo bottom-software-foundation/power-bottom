@@ -103,27 +103,6 @@ module.exports = class PowerBottom extends Plugin {
         );
 
         inject(
-            "power-bottom-dispatcher",
-            FluxDispatcher,
-            "dispatch",
-            (args) => {
-                if (
-                    args[0].type == "MESSAGE_UPDATE" &&
-                    !args[0].bottomTranslation &&
-                    Handler.cache[args[0].message.channel_id] &&
-                    Handler.cache[args[0].message.channel_id][args[0].message.id]
-                ) {
-                    Handler.removeMessage(
-                        args[0].message.channel_id,
-                        args[0].message.id,
-                        false
-                    );
-                }
-                return args;
-            }
-        );
-
-        inject(
             "power-bottom-send-message",
             MessageEvents,
             "sendMessage",
@@ -211,16 +190,32 @@ module.exports = class PowerBottom extends Plugin {
         );
 
         MessageContent.type.displayName = "MessageContent";
+
+        FluxDispatcher.subscribe('MESSAGE_UPDATE', this.handleMessageUpdate)
     }
-    
+
+    handleMessageUpdate (evt) {
+        if (
+            !evt.bottomTranslation &&
+            Handler.cache[evt.message.channel_id] &&
+            Handler.cache[evt.message.channel_id][evt.message.id]
+        ) {
+            Handler.removeMessage(
+                evt.message.channel_id,
+                evt.message.id,
+                false
+            );
+        }
+    }
+
     pluginWillUnload () {
-        uninject("power-bottom-dispatcher");
         uninject("power-bottom-send-message");
         uninject("power-bottom-translate-button");
         uninject("power-bottom-message-content");
         uninject("power-bottom-file-upload");
         powercord.api.commands.unregisterCommand('bottom');
         powercord.api.settings.unregisterSettings(this.entityID);
+        FluxDispatcher.unsubscribe('MESSAGE_UPDATE', this.handleMessageUpdate)
         Handler.clearCache();
     }
 }
