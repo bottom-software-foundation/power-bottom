@@ -76,7 +76,7 @@ class BottomHandler {
     }
 
     updateMessage(message) {
-        FluxDispatcher.dirtyDispatch({
+        FluxDispatcher.dispatch({
             bottomTranslation: true,
             type: "MESSAGE_UPDATE",
             message,
