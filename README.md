@@ -1,6 +1,6 @@
 # Power Bottom
 
-[![Discord](https://img.shields.io/discord/802665366727426098?color=%237289DA&logo=discord)](https://discord.gg/Ek8ztfmBSs)
+[![Discord](https://img.shields.io/discord/802665366727426098?color=%237289DA&logo=discord)](https://discord.gg/Ek8ztfmBSs) [![Replugged](https://img.shields.io/badge/Replugged-Install%20to%20Replugged!-blueviolet?logo=discord)](https://replugged.dev/install?url=bottom-software-foundation/power-bottom)
 
 A Powercord plugin for bottom, following the [bottom spec](https://github.com/bottom-software-foundation/spec).
 
